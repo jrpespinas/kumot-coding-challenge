@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  server:
+    build: .
+    image: kumot-challenge:latest
+    container_name: kumot-server
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+  redis-server:
+    image: redis:alpine
+    container_name: redis-server
+    command: redis-server /data/redis/redis.conf
+    volumes:
+      - ./redis.conf:/data/redis/redis.conf
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
