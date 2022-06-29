@@ -35,7 +35,9 @@ libraries to integrate with github</li>
 The API endpoint needed to get Github user information is
 `https://api.github.com/users/{username}`
 
-## Architecture and Design
+## Solution
+
+### Project Structure
 
 ```Shell
 .
@@ -56,14 +58,15 @@ The API endpoint needed to get Github user information is
 │   │   └── rest
 │   │       ├── controller.go        # Handler definition
 │   │       ├── response.go          # Struct definition for appropriate server responses
+│   │       ├── token.go             # Struct definition for token response
 │   │       └── user.go              # Struct definition for parsing request body
 │   │
-│   ├── listing                      # Service Layer: application logic of the application
+│   ├── listing                      # Service Layer: display of github details
 │   │   ├── service.go               # Handle caching and repository calls
 │   │   ├── service_test.go          # Unit and mock test for the service layer
 │   │   └── sorter.go                # Define helper function for sorting the github details
 │   │
-│   ├── logging                      # Logging service
+│   ├── logging                      # Service Layer: logging
 │   │   └── logger.go                # Uses zerolog as the logger
 │   │
 │   ├── repository                   # Repository Layer: Data Access and Persistence
@@ -72,8 +75,11 @@ The API endpoint needed to get Github user information is
 │   │   └── cache
 │   │       └── cache.go             # Definition of Cache Interface, Redis Implementation
 │   │
-│   └── router
-│       └── router.go                # Definition of router interface, Chi-Router implementation
+│   ├── router
+│   │   └── router.go                # Definition of router interface, Chi-Router implementation
+│   │
+│   └── session                      # Service Layer: Session
+│       └── service.go               # Generate and Verify token using redis
 └── redis.conf                       # Basic custom configuration for our redis Cache
 ```
 
@@ -160,13 +166,35 @@ ok      github.com/jrpespinas/kumot-coding-challenge/pkg/listing        0.003s
 
 ### Usage
 
-1. Open another linux terminal and paste the following curl request
+1. Open another linux terminal and paste the following curl request to generate your token
 
 ```shell
-$ curl -X POST http://localhost:8080/users -H 'Content-Type: application/json' -d '{"usernames":["jrpespinas"]}'
+$ curl -X GET http://localhost:8080/generate-token -H 'Content-Type: application/json'
 ```
 
-2. You should expect the following output on your terminal
+2. You will receive your token in this format
+
+```json
+{
+  "status": "success",
+  "code": 200,
+  "data": { "token": "8653dd19ea99820b91a5e5815bf5b10b" }
+}
+```
+
+3. Next, copy the token (without the quotation marks) and insert it in your header on the following request
+
+```shell
+$ curl -X POST http://localhost:8080/users -H 'Content-Type: application/json' -H 'Session-Token: <INSERT-TOKEN-HERE>' -d '{"usernames":["jrpespinas"]}'
+```
+
+See this example
+
+```shell
+$ curl -X POST http://localhost:8080/users -H 'Content-Type: application/json' -H 'Session-Token: 8653dd19ea99820b91a5e5815bf5b10b' -d '{"usernames":["jrpespinas"]}'
+```
+
+4. You should expect the following output on your terminal
 
 ```json
 {
