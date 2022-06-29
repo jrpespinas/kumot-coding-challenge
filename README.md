@@ -88,7 +88,7 @@ If you already have Docker, simply follow the steps to deploy our backend and re
 1. Open your linux terminal and clone this repository.
 
 ```shell
-$ git@github.com:jrpespinas/kumot-coding-challenge.git
+$ git clone git@github.com:jrpespinas/kumot-coding-challenge.git
 ```
 
 2. Locate the project directory
