@@ -278,3 +278,8 @@ $ curl -X POST http://localhost:8080/users -H 'Content-Type: application/json' -
 <a id="4">[4]</a> [What is Domain Driven Design (DDD)?](https://stackoverflow.com/a/1222488)
 
 <a id="5">[5]</a> [Sort Struct Slice by Specific Field](https://stackoverflow.com/a/53025566)
+
+## Personal links
+
+- Github basic portfolio: https://jrpespinas.github.io/
+- Competitive programming solutions: https://github.com/jrpespinas/cp-adventures
