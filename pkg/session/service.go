@@ -31,12 +31,15 @@ func NewService(sessionStore cache.Repository) Service {
 // Generate a simple random alphanumeric string
 func (s *service) GenerateToken() (string, error) {
 	length, _ := strconv.Atoi(os.Getenv("TOKEN_LENGTH"))
+
+	// Generate random token
 	b := make([]byte, length)
 	if _, err := rand.Read(b); err != nil {
 		return "", errors.New("service unavailable")
 	}
-
 	token := hex.EncodeToString(b)
+
+	// Cache session
 	s.sessionStore.SetSession(token, 1)
 	return token, nil
 }
