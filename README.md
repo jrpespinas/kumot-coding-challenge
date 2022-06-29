@@ -163,7 +163,7 @@ ok      github.com/jrpespinas/kumot-coding-challenge/pkg/listing        0.003s
 1. Open another linux terminal and paste the following curl request
 
 ```shell
-curl -X POST http://localhost:8080/users -H 'Content-Type: application/json' -d '{"usernames":["jrpespinas"]}'
+$ curl -X POST http://localhost:8080/users -H 'Content-Type: application/json' -d '{"usernames":["jrpespinas"]}'
 ```
 
 2. You should expect the following output on your terminal
