@@ -2,7 +2,7 @@
 
 ## Problem Statement
 
-Golang project that has an API endpoint that takes a list of github
+Develop a golang project that has an API endpoint that takes a list of github
 usernames (up to a max of 10 names) and returns to the user a list of basic
 information for those users including:
 
@@ -35,11 +35,47 @@ libraries to integrate with github</li>
 The API endpoint needed to get Github user information is
 `https://api.github.com/users/{username}`
 
-## Solution
-
-## Installation
-
 ## Architecture and Design
+
+```Shell
+.
+├── Dockerfile                       # Dockerfile for the the golang application
+├── LICENSE
+├── README.md
+├── cmd                              # Directory to store executables--entry point
+│   └── server                       # Contains the main file which serves the backend
+│       └── main.go
+├── docker-compose.yml               # Simplify the deployment of the backend and redis image
+├── go.mod
+├── go.sum
+├── pkg                              # Contains the controller, services, repository
+│   ├── domain                       # Directory containing the definition of models/domain
+│   │   └── user.go                  # Github user details model
+│   │
+│   ├── http                         # Controller Layer
+│   │   └── rest
+│   │       ├── controller.go        # Handler definition
+│   │       ├── response.go          # Struct definition for appropriate server responses
+│   │       └── user.go              # Struct definition for parsing request body
+│   │
+│   ├── listing                      # Service Layer: application logic of the application
+│   │   ├── service.go               # Handle caching and repository calls
+│   │   ├── service_test.go          # Unit and mock test for the service layer
+│   │   └── sorter.go                # Define helper function for sorting the github details
+│   │
+│   ├── logging                      # Logging service
+│   │   └── logger.go                # Uses zerolog as the logger
+│   │
+│   ├── repository                   # Repository Layer: Data Access and Persistence
+│   │   ├── api
+│   │   │   └── repository.go        # Definition of Repository interface, github implementation
+│   │   └── cache
+│   │       └── cache.go             # Definition of Cache Interface, Redis Implementation
+│   │
+│   └── router
+│       └── router.go                # Definition of router interface, Chi-Router implementation
+└── redis.conf                       # Basic custom configuration for our redis Cache
+```
 
 ## Trade offs
 
