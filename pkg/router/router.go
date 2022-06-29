@@ -30,5 +30,6 @@ func (route *routes) Router() http.Handler {
 
 	// Define our only endpoint
 	r.Post("/users", route.controller.ShowDetails)
+	r.Get("/generate-token", route.controller.GenerateToken)
 	return r
 }

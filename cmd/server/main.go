@@ -11,16 +11,18 @@ import (
 	"github.com/jrpespinas/kumot-coding-challenge/pkg/repository/api"
 	"github.com/jrpespinas/kumot-coding-challenge/pkg/repository/cache"
 	"github.com/jrpespinas/kumot-coding-challenge/pkg/router"
+	"github.com/jrpespinas/kumot-coding-challenge/pkg/session"
 	"github.com/rs/zerolog"
 )
 
 var (
 	host       string           = fmt.Sprintf("%v:%v", os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
-	caching    cache.Repository = cache.NewRedis(host, 0, 2)
+	caching    cache.Repository = cache.NewRedis(host, 0, 2, 5)
 	repository api.Repository   = api.NewRepository(os.Getenv("GITHUB_URL"))
 	logger     zerolog.Logger   = logging.NewLogger(os.Getenv("LOG_LEVEL"))
 	service    listing.Service  = listing.NewService(repository, caching, logger)
-	controller rest.Controller  = rest.NewController(service, logger)
+	sess       session.Service  = session.NewService(caching)
+	controller rest.Controller  = rest.NewController(service, logger, sess)
 	httpRouter router.Route     = router.NewRouter(controller)
 )
 

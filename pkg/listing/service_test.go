@@ -40,6 +40,19 @@ func (m *MockRedisRepository) Set(key string, user *domain.User) error {
 	return args.Error(0)
 }
 
+// Define mock Get method
+func (m *MockRedisRepository) GetSession(tokenString string) (int, error) {
+	args := m.Called()
+	result := args.Get(0)
+	return result.(int), args.Error(1)
+}
+
+// Define mock Set method
+func (m *MockRedisRepository) SetSession(tokenString string, val int) error {
+	args := m.Called()
+	return args.Error(0)
+}
+
 func TestValidateEmptyList(t *testing.T) {
 	testService := NewService(nil, nil, logging.NewLogger(os.Getenv("LOG_LEVEL")))
 	err := testService.Validate(nil)
