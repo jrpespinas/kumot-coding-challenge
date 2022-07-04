@@ -257,16 +257,6 @@ $ curl -X POST http://localhost:8080/users -H 'Content-Type: application/json' -
 }
 ```
 
-## Trade offs
-
-1. Ideally, Clean Architecture is used for large enterprise applications and microservices. The reason I chose this architecture is inspired by the fact that your company uses microservices.
-
-2. Another trade off for Clean Architecture is the increased initial development time. Writing more code at the start to compensate for better maintainability, testability, and minimal refactoring.
-
-3. Domain-Driven Design is the appropriate approach if I was working domain expert who can explain how the real-world system works and who must be able to understand the project structure. The reason for this approach is for explanation purposes I consider you as domain expert who needs to understand my project structure.
-
-4. I used a primitive approach by using rand in generating tokens to utilize Redis. Better to use other methods such as JWT.
-
 ## References
 
 <a id="1">[1]</a> [Clean Architecture](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164)
